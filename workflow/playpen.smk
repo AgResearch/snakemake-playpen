@@ -8,10 +8,10 @@ rule a2b:
     output: "{path}.b"
     shell: "sed -e 's/a/b/g' {wildcards.path}.a >{wildcards.path}.b"
 
-#rule gunzip:
-#    input: "{path}.gz"
-#    output: "{path}"
-#    shell: "gunzip -k {wildcards.path}.gz"
+rule gunzip:
+    input: "{path}.gz"
+    output: "{path}"
+    shell: "gunzip -k {wildcards.path}.gz"
 
 rule gzip:
     input: "{path}"
