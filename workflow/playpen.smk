@@ -6,14 +6,20 @@ rule default:
 rule a2b:
     input: "{path}.a"
     output: "{path}.b"
-    shell: "sed -e 's/a/b/g' {wildcards.path}.a >{wildcards.path}.b"
+    shell: "sed -e 's/a/b/g' {input} >{output}"
 
 rule gunzip:
-    input: "{path}.gz"
+    input:
+        branch(lambda wildcards: not wildcards["path"].endswith(".gz"),
+               then="{path}.gz",
+               otherwise="/N/A")
     output: "{path}"
-    shell: "gunzip -k {wildcards.path}.gz"
+    shell: "gunzip -k {input}"
 
 rule gzip:
-    input: "{path}"
+    input:
+        branch(lambda wildcards: not wildcards["path"].endswith(".gz"),
+               then="{path}",
+               otherwise="/N/A")
     output: "{path}.gz"
-    shell: "gzip -k {wildcards.path}"
+    shell: "gzip -k {input}"
